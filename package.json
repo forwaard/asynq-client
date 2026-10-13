@@ -1,10 +1,14 @@
 {
   "name": "asynq-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Insert-only Node.js/TypeScript producer for the Go asynq task queue (Redis wire-compatible)",
   "main": "./dist/index.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build",
     "test": "vitest run",
     "test:unit": "vitest run test/unit.test.ts",
     "test:integration": "vitest run test/integration.test.ts"
@@ -18,9 +22,14 @@
     "task-queue",
     "redis",
     "producer",
-    "nodejs"
+    "nodejs",
+    "typescript",
+    "go"
   ],
-  "author": "",
+  "author": {
+    "name": "forwaard",
+    "url": "https://github.com/forwaard"
+  },
   "license": "MIT",
   "type": "module",
   "files": [

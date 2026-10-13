@@ -37,8 +37,6 @@ Push tasks from your Node.js services into the same Redis-backed queues your Go 
 npm install asynq-client ioredis
 ```
 
-> Not on npm yet? Install straight from GitHub: `npm install github:forwaard/asynq-client`
-
 **Runtime requirements:** Node.js ≥ 18 or Bun ≥ 1.0 (ESM only). Redis ≥ 4. No native dependencies.
 
 ## API Reference

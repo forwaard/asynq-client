@@ -37,7 +37,7 @@ Push tasks from your Node.js services into the same Redis-backed queues your Go 
 npm install asynq-client ioredis
 ```
 
-> Not on npm yet? Install straight from GitHub: `npm install github:forwaard/asynq-node`
+> Not on npm yet? Install straight from GitHub: `npm install github:forwaard/asynq-client`
 
 ## Quick start
 

@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/forwaard/asynq-node.git"
+    "url": "git+https://github.com/forwaard/asynq-client.git"
   },
   "keywords": [
     "asynq",
@@ -29,9 +29,9 @@
     "README.md"
   ],
   "bugs": {
-    "url": "https://github.com/forwaard/asynq-node/issues"
+    "url": "https://github.com/forwaard/asynq-client/issues"
   },
-  "homepage": "https://github.com/forwaard/asynq-node#readme",
+  "homepage": "https://github.com/forwaard/asynq-client#readme",
   "types": "./dist/index.d.ts",
   "dependencies": {
     "ioredis": "^6.0.0",

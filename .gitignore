@@ -1,0 +1,4 @@
+node_modules/
+dist/
+integration/consumer
+*.log

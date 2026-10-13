@@ -4,7 +4,7 @@ Insert-only **Node.js / TypeScript producer** for the [asynq](https://github.com
 
 Push tasks from your Node.js services into the same Redis-backed queues your Go `asynq.Server` fleet consumes — with **zero changes on the Go side**.
 
-[中文文档](#中文文档)
+[中文文档](#中文文档) · Working on this repo with an AI assistant? Read [`AGENTS.md`](AGENTS.md) first.
 
 ---
 
@@ -38,6 +38,52 @@ npm install asynq-client ioredis
 ```
 
 > Not on npm yet? Install straight from GitHub: `npm install github:forwaard/asynq-client`
+
+**Runtime requirements:** Node.js ≥ 18 or Bun ≥ 1.0 (ESM only). Redis ≥ 4. No native dependencies.
+
+## API Reference
+
+### `new Client(redis: Redis)`
+
+Creates a producer over an existing ioredis connection. The client never closes the connection — the caller owns it.
+
+### `client.enqueue(taskType, payload, options?): Promise<string>`
+
+Enqueues a task and resolves with its ID.
+
+- `taskType: string` — must exactly match the handler registration on the Go side (`mux.HandleFunc("email:send", ...)`).
+- `payload: unknown` — JSON-serialized (`JSON.stringify(payload ?? null)`). The Go handler receives the raw JSON bytes.
+
+#### Options
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `queue` | `string` | `"default"` | Target queue name (non-blank). |
+| `maxRetry` | `number` | `25` | Max retry count; negative is treated as 0. |
+| `taskId` | `string` | random UUID | Custom task ID. |
+| `timeout` | `number` (sec) | `0` | Per-task timeout. |
+| `deadline` | `Date` | — | Absolute deadline. |
+| `uniqueTTL` | `number` (sec) | — | Reject same type+payload within TTL. |
+| `processAt` | `Date` | — | Deliver at this time. |
+| `processIn` | `number` (sec) | — | Deliver after this delay. |
+| `retention` | `number` (sec) | `0` | Keep the completed task this long; 0 deletes it on success. |
+| `group` | `string` | — | Stage into an aggregation group (needs `GroupAggregator` on the Go server). |
+| `headers` | `Record<string, string>` | `{}` | Extra metadata attached to the message. |
+
+Routing precedence: `group` → scheduled (`processAt`/`processIn`) → immediate pending list.
+
+If neither `timeout` nor `deadline` is set, the message carries `timeout: 1800` (30 minutes) — identical to the Go client default.
+
+#### Errors
+
+| Error | Meaning |
+|---|---|
+| `ErrDuplicateTask` | A task with the same type+payload holds the unique lock (`uniqueTTL`). |
+| `ErrTaskIdConflict` | A task with the same ID already exists. |
+
+### Helpers
+
+`encodeMessage` / `decodeMessage` (protobuf), and the key builders (`taskKey`, `pendingKey`, `scheduledKey`, `uniqueKey`, …) are exported for tooling. See [`AGENTS.md`](AGENTS.md) for the full internal contract.
 
 ## Quick start
 

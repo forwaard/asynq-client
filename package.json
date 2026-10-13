@@ -1,5 +1,5 @@
 {
-  "name": "asynq-node",
+  "name": "asynq-client",
   "version": "0.1.0",
   "description": "Insert-only Node.js/TypeScript producer for the Go asynq task queue (Redis wire-compatible)",
   "main": "./dist/index.js",

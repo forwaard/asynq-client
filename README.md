@@ -1,4 +1,4 @@
-# asynq-node
+# asynq-client
 
 Insert-only **Node.js / TypeScript producer** for the [asynq](https://github.com/hibiken/asynq) task queue (Go).
 
@@ -12,7 +12,7 @@ Push tasks from your Node.js services into the same Redis-backed queues your Go 
 
 `asynq` is an excellent Go task queue, but it only ships a Go client. If part of your stack is Node.js (API gateway, webhook receiver, Next.js backend, …), you previously had two bad options: call an internal Go HTTP service just to enqueue a task, or run a second queue system.
 
-`asynq-node` takes a third path: it writes task messages to Redis in **byte-identical wire format** — the same protobuf encoding, the same Lua scripts, the same key layout as the official Go client. To the Go server, a Node-produced task is indistinguishable from a Go-produced one.
+`asynq-client` takes a third path: it writes task messages to Redis in **byte-identical wire format** — the same protobuf encoding, the same Lua scripts, the same key layout as the official Go client. To the Go server, a Node-produced task is indistinguishable from a Go-produced one.
 
 ```
 ┌──────────────────┐         ┌────────┐         ┌──────────────────┐
@@ -34,7 +34,7 @@ Push tasks from your Node.js services into the same Redis-backed queues your Go 
 ## Install
 
 ```bash
-npm install asynq-node ioredis
+npm install asynq-client ioredis
 ```
 
 > Not on npm yet? Install straight from GitHub: `npm install github:forwaard/asynq-node`
@@ -43,7 +43,7 @@ npm install asynq-node ioredis
 
 ```typescript
 import Redis from 'ioredis';
-import { Client } from 'asynq-node';
+import { Client } from 'asynq-client';
 
 const redis = new Redis(process.env.REDIS_URL!);
 const client = new Client(redis);
@@ -142,7 +142,7 @@ MIT. The vendored `proto/asynq.proto` and the Lua scripts in `src/scripts.ts` ar
 
 ## 中文文档
 
-`asynq-node` 是 Go 任务队列 [asynq](https://github.com/hibiken/asynq) 的 **Node.js 纯生产者客户端**：从 Node 服务往 Redis 里推任务，由现有的 Go `asynq.Server` 集群消费，**Go 侧零改动**。
+`asynq-client` 是 Go 任务队列 [asynq](https://github.com/hibiken/asynq) 的 **Node.js 纯生产者客户端**：从 Node 服务往 Redis 里推任务，由现有的 Go `asynq.Server` 集群消费，**Go 侧零改动**。
 
 ### 原理
 
@@ -158,7 +158,7 @@ asynq 的 Go 客户端与服务端从不直接通信——两边都只操作 Red
 
 ```typescript
 import Redis from 'ioredis';
-import { Client } from 'asynq-node';
+import { Client } from 'asynq-client';
 
 const client = new Client(new Redis(process.env.REDIS_URL!));
 
